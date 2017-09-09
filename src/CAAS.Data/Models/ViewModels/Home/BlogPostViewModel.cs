@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CAAS.Models;
+
+namespace CAAS.Models.ViewModels.Home
+{
+  public class BlogPostViewModel
+  {
+    public long Id { get; set; }
+    public string Title { get; set; }
+    public CAAS.Models.Author Author { get; set; }
+    public string Description { get; set; }
+    public string Content { get; set; }
+    public DateTime ModifiedAt { get; set; }
+    public DateTime PublishOn { get; set; }
+    public IEnumerable<Category> Categories { get; set; }
+    public IEnumerable<Topic> Topics { get; set; }
+  }
+}
