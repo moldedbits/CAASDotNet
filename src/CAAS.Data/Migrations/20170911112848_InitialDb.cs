@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CAAS.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,9 @@ namespace CAAS.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     Biography = table.Column<string>(nullable: true),
+                    Blurb = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
+                    ImageLink = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -46,6 +48,7 @@ namespace CAAS.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
+                    ShowOnHomePage = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -141,6 +144,18 @@ namespace CAAS.Data.Migrations
                 name: "IX_BlogPostTopic_BlogPostId",
                 table: "BlogPostTopic",
                 column: "BlogPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Category_Name",
+                table: "Category",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topic_Title",
+                table: "Topic",
+                column: "Title",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
