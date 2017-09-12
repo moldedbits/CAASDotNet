@@ -33,3 +33,9 @@ ul.nostyle, ul.nostyle > li {
 .label {
     margin: 2px;
 }
+
+.sidebarAdminLinks
+{
+    color: #777;
+    text-decoration: none;
+}
