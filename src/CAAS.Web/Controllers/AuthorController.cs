@@ -129,27 +129,30 @@ namespace CAAS.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPost(AddBlogPostViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var curUser = await _userManager.GetUserAsync(User);
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddPost(AddBlogPostViewModel model)
+    {
+      var content = Request.Form["editor1"];
+
+      if (ModelState.IsValid)
+      {
+        var curUser = await _userManager.GetUserAsync(User);
 
                 var author = await _qpa.ProcessAsync(new GetAuthorByAppUserIdQuery { Id = curUser.Id });
 
-                var abpc = new AddBlogPostCommand
-                {
-                    Author = author,
-                    Title = model.Title,
-                    Content = model.Content,
-                    Description = model.Description,
-                    CreatedAt = DateTime.Now,
-                    ModifiedAt = DateTime.Now,
-                    Public = false,
-                    PublishOn = DateTime.Now.AddDays(7)
-                };
+        var abpc = new AddBlogPostCommand
+        {
+          Author = author,
+          Title = model.Title,
+          //Content = model.Content,
+          Content = content,
+          Description = model.Description,
+          CreatedAt = DateTime.Now,
+          ModifiedAt = DateTime.Now,
+          Public = false,
+          PublishOn = DateTime.Now.AddDays(7)
+        };
 
                 var result = await _cp.ProcessAsync(abpc);
 
