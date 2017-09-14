@@ -3,6 +3,8 @@ using CAAS.Data.Command.EFCoreCommandHandlers;
 using CAAS.Data.Query.EFCoreQueryHandlers;
 using CAAS.EFCore;
 using CAAS.Models;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -81,9 +83,29 @@ namespace CAAS
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
             {
                 opts.User.RequireUniqueEmail = true;
-                opts.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(1);
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
+
+            var TwitterKey = Configuration[$"{Configuration["TwitterKeyConfigName"]}"];
+            var TwitterSecret = Configuration[$"{Configuration["TwitterSecretConfigName"]}"];
+
+            if (TwitterKey != null && TwitterSecret != null)
+            {
+                services.AddAuthentication().AddTwitter(twitterOptions =>
+                {
+                    twitterOptions.ConsumerKey = TwitterKey;
+                    twitterOptions.ConsumerSecret = TwitterSecret;
+                });
+            }
+
+            var FacebookAppId = Configuration[$"{Configuration["FacebookAppIdConfigName"]}"];
+            var FacebookAppSecret = Configuration[$"{Configuration["FacebookAppSecretConfigName"]}"];
+
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = FacebookAppId;
+                facebookOptions.AppSecret = FacebookAppSecret;
+            });
 
             IntegrateSimpleInjector(services);
         }
@@ -131,32 +153,7 @@ namespace CAAS
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseIdentity();
-
-            var TwitterKey = Configuration[$"{Configuration["TwitterKeyConfigName"]}"];
-            var TwitterSecret = Configuration[$"{Configuration["TwitterSecretConfigName"]}"];
-
-            if (TwitterKey != null && TwitterSecret != null)
-            {
-                app.UseTwitterAuthentication(new TwitterOptions()
-                {
-                    ConsumerKey = TwitterKey,
-                    ConsumerSecret = TwitterSecret,
-                    RetrieveUserDetails = true
-                });
-            }
-
-            var FacebookAppId = Configuration[$"{Configuration["FacebookAppIdConfigName"]}"];
-            var FacebookAppSecret = Configuration[$"{Configuration["FacebookAppSecretConfigName"]}"];
-
-            if (FacebookAppId != null && FacebookAppSecret != null)
-            {
-                app.UseFacebookAuthentication(new FacebookOptions()
-                {
-                    AppId = FacebookAppId,
-                    AppSecret = FacebookAppSecret
-                });
-            }
+            app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
 

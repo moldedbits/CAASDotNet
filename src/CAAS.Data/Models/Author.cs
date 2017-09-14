@@ -11,11 +11,15 @@ namespace CAAS.Models
   public class Author
   {
     public long Id { get; set; }
+
     public string ApplicationUserId { get; set; }
+
     [NotMapped]
     public ApplicationUser ApplicationUser { get; set; }
+
     [Required]
     public string FirstName { get; set; }
+
     [Required]
     public string LastName { get; set; }
 

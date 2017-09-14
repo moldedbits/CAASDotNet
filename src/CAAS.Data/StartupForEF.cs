@@ -6,6 +6,7 @@ using CAAS.EFCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using CAAS;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace CAAS.Data
 {
@@ -18,13 +19,13 @@ namespace CAAS.Data
     /// https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
     /// </summary>
     /// 
-    class StartupForEF : IDbContextFactory<BlogDbContext>
+    class StartupForEF : IDesignTimeDbContextFactory<BlogDbContext>
     {
-        public BlogDbContext Create(DbContextFactoryOptions options)
+        public BlogDbContext CreateDbContext(string[] args)
         {
             var confBuilder = new ConfigurationBuilder()
-              .AddEnvironmentVariables()
-              .AddUserSecrets<StartupForEF>();
+            .AddEnvironmentVariables()
+            .AddUserSecrets<StartupForEF>();
 
             IConfiguration Configuration = confBuilder.Build();
 
@@ -38,7 +39,6 @@ namespace CAAS.Data
             builder.UseSqlServer(@"Data Source =.\SQLEXPRESS; Initial Catalog = CAAS; Trusted_Connection = True; ");
 
             return new BlogDbContext(builder.Options);
-
         }
     }
 }

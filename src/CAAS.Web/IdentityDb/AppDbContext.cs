@@ -8,6 +8,8 @@ using CAAS.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace CAAS
 {
@@ -77,6 +79,29 @@ namespace CAAS
                     }
                 }
             }
+        }
+    }
+
+    class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            var confBuilder = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .AddUserSecrets<ApplicationDbContext>();
+
+            IConfiguration Configuration = confBuilder.Build();
+
+            // This is for a mutli-tenant Environment, so the ConnectionString Env Var name can be set
+            // In AppSettings.json
+            var ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            //"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Initial Catalog=C1;AttachDbFilename=%CONTENTROOTPATH%\\Data\\C1.mdf;Trusted_Connection=true;MultipleActiveResultSets=true"
+
+            builder.UseSqlServer(@"Data Source =.\SQLEXPRESS; Initial Catalog = CAAS; Trusted_Connection = True; ");
+
+            return new ApplicationDbContext(builder.Options);
         }
     }
 }
