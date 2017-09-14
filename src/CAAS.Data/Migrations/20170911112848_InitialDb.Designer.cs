@@ -8,13 +8,13 @@ using CAAS.EFCore;
 namespace CAAS.Data.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20170513221518_Initial")]
-    partial class Initial
+    [Migration("20170911112848_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.1")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CAAS.Models.Author", b =>
@@ -26,8 +26,12 @@ namespace CAAS.Data.Migrations
 
                     b.Property<string>("Biography");
 
+                    b.Property<string>("Blurb");
+
                     b.Property<string>("FirstName")
                         .IsRequired();
+
+                    b.Property<string>("ImageLink");
 
                     b.Property<string>("LastName")
                         .IsRequired();
@@ -102,6 +106,9 @@ namespace CAAS.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Category");
                 });
 
@@ -112,9 +119,14 @@ namespace CAAS.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<bool>("ShowOnHomePage");
+
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Title")
+                        .IsUnique();
 
                     b.ToTable("Topic");
                 });

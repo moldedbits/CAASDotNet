@@ -33,6 +33,7 @@ namespace CAAS.Data
             var ConnectionString = Configuration.GetConnectionString("DefaultConnection");
 
             var builder = new DbContextOptionsBuilder<BlogDbContext>();
+            //"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Initial Catalog=C1;AttachDbFilename=%CONTENTROOTPATH%\\Data\\C1.mdf;Trusted_Connection=true;MultipleActiveResultSets=true"
 
             builder.UseSqlServer(@"Data Source =.\SQLEXPRESS; Initial Catalog = CAAS; Trusted_Connection = True; ");
 
