@@ -11,7 +11,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h3>Add Post</h3></div>
             <div class="panel-body">
-                <div asp-validation-summary="All" class="text-danger"></div>
+                @*<div asp-validation-summary="All" class="text-danger"></div>*@
                 <form asp-action="AddPost" method="post">
                     <div class="form-group">
                         <label asp-for="Title">Title:</label>
@@ -34,7 +34,17 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="ContentEditorTab">
                             <div class="form-group">
-                                <textarea class="form-control" style="height:600px" asp-for="Content"></textarea>
+                                @*<textarea class="form-control" style="height:600px" asp-for="Content"></textarea>*@
+                                <textarea class="form-control" runat="server" style="height:1000px" name="editor1" id="editor1">
+                                    Your content goes here...
+                                </textarea>
+                                <script>
+                                    // Replace the <textarea id="editor1"> with a CKEditor
+                                    // instance, using default configuration.
+                                    CKEDITOR.replace('editor1');
+
+                                    //alert(CKEDITOR.instances.editor1.getData());
+                                </script>
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="PreviewTab">
@@ -60,4 +70,5 @@
 
 @section Scripts {
     <script type="text/javascript" asp-src-include="~/lib/js/AddEditPostPage.js"></script>
+    @*<script type="text/javascript" asp-src-include="~/lib/js/ckeditor/ckeditor.js"></script>*@
 }

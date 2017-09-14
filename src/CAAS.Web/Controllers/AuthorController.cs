@@ -133,6 +133,8 @@ namespace CAAS.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPost(AddBlogPostViewModel model)
     {
+      var content = Request.Form["editor1"];
+
       if (ModelState.IsValid)
       {
         var curUser = await _userManager.GetUserAsync(User);
@@ -143,7 +145,8 @@ namespace CAAS.Controllers
         {
           Author = author,
           Title = model.Title,
-          Content = model.Content,
+          //Content = model.Content,
+          Content = content,
           Description = model.Description,
           CreatedAt = DateTime.Now,
           ModifiedAt = DateTime.Now,

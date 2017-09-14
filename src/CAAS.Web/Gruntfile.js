@@ -17,7 +17,8 @@ module.exports = function (grunt) {
           { expand: true, src: ['css/*'], dest: 'wwwroot/lib/css/', filter: 'isFile', flatten: true },
           { expand: true, src: ['bower_components/**/*.min.js'], dest: 'wwwroot/lib/js/', filter: 'isFile', flatten: true },
           { expand: true, src: ['bower_components/bootstrap/fonts/*'], dest: 'wwwroot/lib/fonts/', filter: 'isFile', flatten: true },
-          { expand: true, src: ['javascript/*.js'], dest: 'wwwroot/lib/js/', filter: 'isFile', flatten: true }
+          { expand: true, src: ['javascript/*.js'], dest: 'wwwroot/lib/js/', filter: 'isFile', flatten: true },
+          { expand: true, cwd: 'javascript/ckeditor', src: ['**'], dest: 'wwwroot/lib/js/ckeditor' }
         ]
       }
     }
