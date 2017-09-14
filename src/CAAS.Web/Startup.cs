@@ -25,6 +25,7 @@ namespace CAAS
     {
         IConfiguration Configuration;
         private Container _container = new Container();
+        private string _contentRootPath = "";
 
         public Startup(IHostingEnvironment env)
         {
@@ -39,15 +40,21 @@ namespace CAAS
             }
 
             Configuration = builder.Build();
+
+            _contentRootPath = env.ContentRootPath;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Initial Catalog=C1;AttachDbFilename=%CONTENTROOTPATH%\\Data\\C1.mdf;Trusted_Connection=true;MultipleActiveResultSets=true"
 
             // This is for a mutli-tenant Environment, so the ConnectionString Env Var name can be set
             // In AppSettings.json
             var ConnectionString = Configuration.GetConnectionString("DefaultConnection");
-
+            //if (ConnectionString.Contains("%CONTENTROOTPATH%"))
+            //{
+            //    ConnectionString = ConnectionString.Replace("%CONTENTROOTPATH%", _contentRootPath);
+            //}
 
             if (ConnectionString == null)
             {

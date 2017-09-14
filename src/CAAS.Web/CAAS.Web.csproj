@@ -92,4 +92,6 @@
     <ProjectReference Include="..\CAAS.Data\CAAS.Data.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="C" /></VisualStudio></ProjectExtensions>
+
 </Project>
